@@ -1,95 +1,107 @@
 "use client";
 
-import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { motion } from "framer-motion";
 import Image from "next/image";
 
 const products = [
-  { tag: "Bestseller", name: "Apex Isolate", flavor: "Natural Vanilla Bean", weight: "907g / 30 Servings", price: 89, image: "/assets/images/tub_vanilla.png" },
-  { tag: "New", name: "Apex Isolate", flavor: "Belgian Dark Chocolate", weight: "907g / 30 Servings", price: 89, image: "/assets/images/tub_chocolate.png" },
-  { tag: "Limited", name: "Apex Isolate", flavor: "Salted Caramel Reserve", weight: "907g / 30 Servings", price: 94, image: "/assets/images/tub_caramel.png" },
+  { id: 1, name: "Madagascar Vanilla", weight: "2.5 LBS", price: "$65", img: "/assets/images/product_vanilla.png", tag: "Best Seller" },
+  { id: 2, name: "Swiss Chocolate", weight: "2.5 LBS", price: "$65", img: "/assets/images/product_chocolate.png" },
+  { id: 3, name: "Salted Caramel", weight: "2.5 LBS", price: "$65", img: "/assets/images/product_caramel.png" }
 ];
 
 export default function PurchaseTerminal() {
-  const containerRef = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "end start"],
-  });
-
-  const rotateImg = useTransform(scrollYProgress, [0, 1], [-2, 2]);
-  const scaleImg = useTransform(scrollYProgress, [0, 1], [1.1, 1]);
-
   return (
-    <section id="collection" ref={containerRef} className="relative w-full py-40 overflow-hidden bg-[#020202]">
+    <section id="shop" className="relative w-full py-32 bg-[#020202] overflow-hidden">
+      {/* Background Lighting */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-[500px] bg-gold/5 blur-[150px] mix-blend-screen pointer-events-none rounded-full" />
       
-      {/* White Quartz High-Fashion Texture */}
-      <motion.div style={{ scale: scaleImg, rotate: rotateImg }} className="absolute inset-0 z-0 opacity-[0.35] mix-blend-screen pointer-events-none origin-center transform-gpu will-change-transform">
-        <Image src="/assets/images/white_quartz.png" alt="White Quartz Luxury Texture" fill className="object-cover" />
-        <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-[#0a0a0a] to-transparent opacity-90" />
-        <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#0a0a0a] to-transparent opacity-90" />
-      </motion.div>
-
       <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
-        <div className="text-center mb-24">
+        <div className="text-center mb-20">
           <motion.span 
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="block text-xs font-bold tracking-[0.35em] text-white uppercase mb-6 drop-shadow-md"
+            className="flex items-center justify-center gap-4 mb-6"
           >
-            The Collection
+            <span className="w-12 h-[1px] bg-gradient-to-r from-transparent to-gold" />
+            <span className="text-xs font-bold tracking-[0.35em] text-white/50 uppercase">Secure Your Batch</span>
+            <span className="w-12 h-[1px] bg-gradient-to-l from-transparent to-gold" />
           </motion.span>
           <motion.h2 
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ delay: 0.1 }}
             viewport={{ once: true }}
-            className="font-sans font-black text-6xl md:text-8xl uppercase tracking-tighter mb-6 text-white drop-shadow-[0_0_30px_rgba(255,255,255,0.2)]"
+            className="font-sans font-black text-5xl md:text-7xl uppercase tracking-tighter leading-none text-white drop-shadow-xl"
           >
-            Find Your <span className="font-cormorant font-normal italic bg-clip-text text-transparent bg-gradient-to-r from-gold-light via-gold to-white">Flavor</span>
+            The Collection
           </motion.h2>
-          <motion.p 
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            viewport={{ once: true }}
-            className="text-concrete font-light tracking-widest md:text-xl max-w-2xl mx-auto drop-shadow-md"
-          >
-            Three meticulously crafted profiles. Each one extraordinary.
-          </motion.p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative z-10">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
           {products.map((p, i) => (
             <motion.div 
-              key={i}
-              initial={{ opacity: 0, y: 50 }}
+              key={p.id}
+              initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: i * 0.15, ease: [0.16, 1, 0.3, 1] }}
               viewport={{ once: true, margin: "-10%" }}
-              className="group flex flex-col items-center text-center bg-[#0a0a0a]/95 border border-white/10 p-12 transition-all duration-700 hover:-translate-y-4 hover:border-gold/50 shadow-[0_20px_40px_rgba(0,0,0,0.6)] hover:shadow-[0_30px_60px_rgba(212,175,55,0.15)] transform-gpu will-change-transform"
+              className="group relative"
             >
-              <div className="text-[10px] font-bold tracking-[0.3em] uppercase text-gold mb-12 border border-gold/30 px-4 py-1.5 rounded-full group-hover:bg-gold/10 transition-colors duration-500">
-                {p.tag}
-              </div>
+              <div className="relative bg-[#050505] p-8 pb-10 border border-white/5 overflow-hidden transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-4 hover:border-gold/30 hover:shadow-[0_20px_60px_rgba(212,175,55,0.15)]">
+                
+                {/* HUD Corners */}
+                <div className="absolute top-2 left-2 text-white/20 text-[10px] group-hover:text-gold/50 transition-colors duration-500">+</div>
+                <div className="absolute top-2 right-2 text-white/20 text-[10px] group-hover:text-gold/50 transition-colors duration-500">+</div>
+                <div className="absolute bottom-2 left-2 text-white/20 text-[10px] group-hover:text-gold/50 transition-colors duration-500">+</div>
+                <div className="absolute bottom-2 right-2 text-white/20 text-[10px] group-hover:text-gold/50 transition-colors duration-500">+</div>
+                
+                {p.tag && (
+                  <div className="absolute top-6 right-6 z-20">
+                    <span className="bg-gold px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.2em] text-[#050505] shadow-[0_0_15px_rgba(212,175,55,0.5)]">
+                      {p.tag}
+                    </span>
+                  </div>
+                )}
 
-              {/* Product Image Focus */}
-              <div className="relative w-48 h-64 mb-10 transition-transform duration-700 group-hover:scale-110 drop-shadow-[0_20px_30px_rgba(0,0,0,0.8)]">
-                <Image src={p.image} alt={p.name} fill className="object-contain" priority={i === 0} />
-              </div>
-              
-              <h3 className="font-sans font-black text-3xl tracking-widest uppercase text-white mb-2 drop-shadow-lg">{p.name}</h3>
-              <div className="font-serif text-xl italic text-concrete-dim mb-6 drop-shadow-sm">{p.flavor}</div>
-              <div className="text-xs font-bold tracking-[0.2em] uppercase text-white/60 mb-12">{p.weight}</div>
-              
-              <div className="mt-auto w-full flex flex-col items-center">
-                <div className="font-sans font-bold text-5xl text-white mb-8 tracking-tighter drop-shadow-md">
-                  <span className="text-gold text-3xl mr-1 font-serif">$</span>{p.price}
+                {/* Glowing backdrop behind product */}
+                <div className="absolute inset-0 top-10 flex justify-center items-center pointer-events-none">
+                  <div className="w-48 h-48 bg-gold/5 rounded-full blur-[40px] group-hover:bg-gold/20 transition-colors duration-700" />
                 </div>
-                <button className="w-full py-5 border border-white/30 text-xs font-bold tracking-[0.3em] text-white uppercase transition-all duration-500 group-hover:bg-gradient-to-r group-hover:from-gold group-hover:to-gold-light group-hover:text-ink group-hover:border-transparent shadow-[inset_0_0_0_0_rgba(212,175,55,0)] group-hover:shadow-[0_0_30px_rgba(212,175,55,0.4)]">
-                  Select
-                </button>
+
+                <div className="relative aspect-[4/5] w-full mb-8 z-10 flex items-center justify-center">
+                  <motion.div 
+                    className="relative w-[70%] h-[70%] transform-gpu will-change-transform"
+                    whileHover={{ scale: 1.05, y: -10 }}
+                    transition={{ ease: [0.16, 1, 0.3, 1], duration: 0.8 }}
+                  >
+                    <Image src={p.img} alt={p.name} fill className="object-contain filter drop-shadow-[0_20px_30px_rgba(0,0,0,0.8)] z-10" sizes="(max-width: 768px) 100vw, 33vw" priority />
+                    
+                    {/* Mirror Floor Reflection */}
+                    <div className="absolute top-full left-0 w-full h-[60%] z-0 pointer-events-none">
+                      <Image 
+                        src={p.img} 
+                        alt={`Reflection of ${p.name}`} 
+                        fill 
+                        className="object-contain scale-y-[-1] opacity-30 filter blur-[1px]" 
+                        style={{ maskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 60%)', WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 60%)' }} 
+                        sizes="(max-width: 768px) 100vw, 33vw" 
+                      />
+                    </div>
+                  </motion.div>
+                </div>
+                
+                <div className="text-center relative z-20">
+                  <h3 className="font-sans font-black text-2xl uppercase tracking-tighter text-white mb-2 group-hover:text-gold transition-colors duration-500">{p.name}</h3>
+                  <div className="flex items-center justify-center gap-3 mb-8">
+                    <span className="text-sm font-light tracking-widest text-concrete-dim uppercase">{p.weight}</span>
+                    <span className="w-1 h-1 rounded-full bg-white/20 block pointer-events-none" />
+                    <span className="text-lg font-bold text-white font-serif italic">{p.price}</span>
+                  </div>
+                  <button className="relative w-full overflow-hidden bg-white text-black py-4 font-bold text-xs tracking-[0.2em] uppercase transition-all duration-500 group-hover:bg-gold group-hover:text-black group-hover:shadow-[0_0_30px_rgba(212,175,55,0.4)] before:absolute before:inset-0 before:bg-white/20 before:-translate-x-full hover:before:translate-x-full before:transition-transform before:duration-700 before:ease-in-out">
+                    <span className="relative z-10">Add to Terminal</span>
+                  </button>
+                </div>
               </div>
             </motion.div>
           ))}
