@@ -2,10 +2,14 @@
 
 import { motion, useScroll, useMotionValueEvent } from "framer-motion";
 import { useState } from "react";
+import { useCart } from "@/context/CartContext";
 
 export default function Header() {
   const { scrollY } = useScroll();
   const [isVisible, setIsVisible] = useState(false);
+  const { triggerLoader, setIsCartOpen, items } = useCart();
+  
+  const cartItemCount = items.reduce((acc, item) => acc + item.quantity, 0);
 
   useMotionValueEvent(scrollY, "change", (latest) => {
     // Show header after scrolling down a bit (past the initial hero view)
@@ -35,15 +39,24 @@ export default function Header() {
         </a>
         
         <nav className="hidden lg:flex items-center gap-12">
-          <a href="#manifesto" className="text-[0.65rem] font-bold tracking-[0.2em] text-concrete uppercase hover:text-gold transition-colors duration-300 drop-shadow-sm">Philosophy</a>
-          <a href="#science" className="text-[0.65rem] font-bold tracking-[0.2em] text-concrete uppercase hover:text-gold transition-colors duration-300 drop-shadow-sm">Science</a>
-          <a href="#process" className="text-[0.65rem] font-bold tracking-[0.2em] text-concrete uppercase hover:text-gold transition-colors duration-300 drop-shadow-sm">Journey</a>
-          <a href="#collection" className="text-[0.65rem] font-bold tracking-[0.2em] text-concrete uppercase hover:text-gold transition-colors duration-300 drop-shadow-sm">Collection</a>
+          <a href="#manifesto" onClick={(e) => { e.preventDefault(); triggerLoader('#manifesto'); }} className="text-[0.65rem] font-bold tracking-[0.2em] text-concrete uppercase hover:text-gold transition-colors duration-300 drop-shadow-sm">Philosophy</a>
+          <a href="#science" onClick={(e) => { e.preventDefault(); triggerLoader('#science'); }} className="text-[0.65rem] font-bold tracking-[0.2em] text-concrete uppercase hover:text-gold transition-colors duration-300 drop-shadow-sm">Science</a>
+          <a href="#timeline" onClick={(e) => { e.preventDefault(); triggerLoader('#timeline'); }} className="text-[0.65rem] font-bold tracking-[0.2em] text-concrete uppercase hover:text-gold transition-colors duration-300 drop-shadow-sm">Journey</a>
+          <a href="#shop" onClick={(e) => { e.preventDefault(); triggerLoader('#shop'); }} className="text-[0.65rem] font-bold tracking-[0.2em] text-concrete uppercase hover:text-gold transition-colors duration-300 drop-shadow-sm">Collection</a>
         </nav>
 
-        <a href="#collection" className="px-5 py-2 md:px-7 md:py-3 bg-[#0a0a0a] border border-white/20 text-white font-sans font-bold text-[0.6rem] md:text-[0.65rem] tracking-[0.2em] uppercase transition-all duration-300 hover:bg-gold hover:text-ink hover:border-gold shadow-[0_0_15px_rgba(212,175,55,0)] hover:shadow-[0_0_20px_rgba(212,175,55,0.3)] flex-shrink-0">
-          Pre-Order
-        </a>
+        <div className="flex items-center gap-4 md:gap-6">
+          <button onClick={() => setIsCartOpen(true)} className="relative group p-2 flex items-center gap-2">
+            <span className="text-[0.65rem] font-bold tracking-[0.15em] text-white uppercase group-hover:text-gold transition-colors">Cart</span>
+            <span className={`transition-all duration-300 ${cartItemCount > 0 ? 'bg-gold text-black scale-100' : 'bg-transparent text-transparent scale-0'} text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center -translate-y-1`}>
+              {cartItemCount}
+            </span>
+          </button>
+          
+          <a href="#shop" onClick={(e) => { e.preventDefault(); triggerLoader('#shop'); }} className="hidden md:flex px-5 py-2 md:px-7 md:py-3 bg-[#0a0a0a] border border-white/20 text-white font-sans font-bold text-[0.6rem] md:text-[0.65rem] tracking-[0.2em] uppercase transition-all duration-300 hover:bg-gold hover:text-ink hover:border-gold shadow-[0_0_15px_rgba(212,175,55,0)] hover:shadow-[0_0_20px_rgba(212,175,55,0.3)] flex-shrink-0">
+            Pre-Order
+          </a>
+        </div>
       </div>
     </motion.header>
   );

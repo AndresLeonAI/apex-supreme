@@ -2,14 +2,17 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
+import { useCart } from "@/context/CartContext";
 
 const products = [
-  { id: 1, name: "Madagascar Vanilla", weight: "2.5 LBS", price: "$65", img: "/assets/images/product_vanilla.png", tag: "Best Seller" },
-  { id: 2, name: "Swiss Chocolate", weight: "2.5 LBS", price: "$65", img: "/assets/images/product_chocolate.png" },
-  { id: 3, name: "Salted Caramel", weight: "2.5 LBS", price: "$65", img: "/assets/images/product_caramel.png" }
+  { id: 1, name: "Madagascar Vanilla", weight: "2.5 LBS", price: 65, img: "/assets/images/tub_vanilla.png", tag: "Best Seller" },
+  { id: 2, name: "Swiss Chocolate", weight: "2.5 LBS", price: 65, img: "/assets/images/tub_chocolate.png" },
+  { id: 3, name: "Salted Caramel", weight: "2.5 LBS", price: 65, img: "/assets/images/tub_caramel.png" }
 ];
 
 export default function PurchaseTerminal() {
+  const { addToCart } = useCart();
+
   return (
     <section id="shop" className="relative w-full py-32 bg-[#020202] overflow-hidden">
       {/* Background Lighting */}
@@ -96,9 +99,12 @@ export default function PurchaseTerminal() {
                   <div className="flex items-center justify-center gap-3 mb-8">
                     <span className="text-sm font-light tracking-widest text-concrete-dim uppercase">{p.weight}</span>
                     <span className="w-1 h-1 rounded-full bg-white/20 block pointer-events-none" />
-                    <span className="text-lg font-bold text-white font-serif italic">{p.price}</span>
+                    <span className="text-lg font-bold text-white font-serif italic">${p.price}</span>
                   </div>
-                  <button className="relative w-full overflow-hidden bg-white text-black py-4 font-bold text-xs tracking-[0.2em] uppercase transition-all duration-500 group-hover:bg-gold group-hover:text-black group-hover:shadow-[0_0_30px_rgba(212,175,55,0.4)] before:absolute before:inset-0 before:bg-white/20 before:-translate-x-full hover:before:translate-x-full before:transition-transform before:duration-700 before:ease-in-out">
+                  <button 
+                    onClick={() => addToCart({ id: p.id, name: p.name, price: p.price, img: p.img })}
+                    className="relative w-full overflow-hidden bg-white text-black py-4 font-bold text-xs tracking-[0.2em] uppercase transition-all duration-500 group-hover:bg-gold group-hover:text-black group-hover:shadow-[0_0_30px_rgba(212,175,55,0.4)] before:absolute before:inset-0 before:bg-white/20 before:-translate-x-full hover:before:translate-x-full before:transition-transform before:duration-700 before:ease-in-out"
+                  >
                     <span className="relative z-10">Add to Terminal</span>
                   </button>
                 </div>

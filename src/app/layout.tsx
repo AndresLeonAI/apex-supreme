@@ -1,5 +1,9 @@
 import type { Metadata } from "next";
 import { Montserrat, Playfair_Display, Cormorant_Garamond } from "next/font/google";
+import { CartProvider } from "@/context/CartContext";
+import ShoppingCart from "@/components/ShoppingCart";
+import CheckoutModal from "@/components/CheckoutModal";
+import PageLoader from "@/components/PageLoader";
 import "./globals.css";
 
 const montserrat = Montserrat({
@@ -38,7 +42,12 @@ export default function RootLayout({
     >
       <body className="relative font-sans min-h-full flex flex-col bg-[#050505] text-[#d4cfc8] overflow-x-hidden">
         <div className="fixed inset-0 noise-overlay pointer-events-none z-50 mix-blend-overlay" />
-        {children}
+        <CartProvider>
+          {children}
+          <ShoppingCart />
+          <CheckoutModal />
+          <PageLoader />
+        </CartProvider>
       </body>
     </html>
   );
